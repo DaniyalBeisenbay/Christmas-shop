@@ -1,0 +1,652 @@
+body {
+  margin: 0;
+  background: #ffffff;
+  font-family: "Montserrat", sans-serif;
+}
+
+.page {
+  width: 1440px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #ffffff;
+}
+.header {
+  background: #f3f6f9;
+  padding: 12px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.logo span {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 600; /* было 700 → делаем легче */
+  letter-spacing: 0.05em;
+  color: #181c29;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav a {
+  font-family: 'Montserrat', sans-serif;
+  text-decoration: none;
+  color: #181c29;
+  font-size: 14px;
+  font-weight: 400; /* 🔥 главное изменение */
+  letter-spacing: 0.05em;
+  transition: 0.3s;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.nav a:hover {
+  background: #ffe0e0; /* светло-красный */
+  color: #ff4646;
+}
+.nav .active {
+  background: #ffe0e0;
+  color: #ff4646;
+}
+.hero {
+  background: #ff4646 url("img/hero-bg.png") no-repeat center top;
+  background-size: 100% auto;
+  min-height: 524px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  width: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding-top: 80px;
+}
+
+.hero-subtitle {
+  font-size: 24px;
+  opacity: 0.9;
+  font-family: 'Allura', cursive;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+
+.hero-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  max-width: 430px;
+  margin: 0;
+  margin-top: 10px;
+}
+
+.hero-button {
+  padding: 18px 30px;
+  background: #181c29;
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.bottom-text {
+  margin-top: -2px;
+}
+
+.about {
+  background: #ff4646;
+  padding: 60px 0;
+}
+
+.about-container {
+  background: #ffffff;
+  border-radius: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+
+.about-text {
+  width: 50%;
+  padding: 60px;
+}
+
+.about-description {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #181c29;
+  max-width: 426px;
+}
+
+.about-subtitle {
+  font-family: 'Allura', cursive;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: #ff4646;
+  margin-bottom: 20px;
+}
+
+.about-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  font-weight: 600; /* SemiBold */
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #181c29;
+  margin-bottom: 20px;
+}
+
+.about-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #181c29;
+}
+
+.about-image {
+  width: 50%;
+  border-radius: 32px;
+  overflow: hidden; 
+}
+
+.about-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.slider {
+  background: #ff4646;
+  padding: 80px 0;
+  color: white;
+  overflow: hidden;
+  padding: 80px 0 100px;
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.slider-subtitle {
+  font-family: 'Allura', cursive;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.slider-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  font-weight: 600; /* semi-bold */
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffffff;
+
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.slider-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.slider-item span {
+  font-size: 48px;
+  font-weight: 700;
+  color: white;
+  white-space: nowrap;
+}
+
+.slider-item img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 20px;
+  display: block;
+}
+.best-gifts {
+  background-color: #ff4646;
+  background-image: url("img/snow.png");
+  background-repeat: repeat;
+  background-position: center;
+  padding: 60px 0;
+}
+
+.best-gifts-container {
+  width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.best-gifts-subtitle {
+  font-family: 'Allura', cursive;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.best-gifts-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  font-weight: 600; /* semi-bold */
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.gifts-grid {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.gift-card {
+  width: 290px;
+  background: #ecf3f8;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.gift-card:hover {
+  transform: translateY(-10px);
+}
+.gift-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  display: block;
+}
+
+.gift-card-content {
+  background: white;
+  padding: 18px 20px 22px;
+  min-height: 110px;
+}
+
+.gift-card-category {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.gift-card-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #181c29;
+  line-height: 1.3;
+}
+
+.work {
+  color: #4361ff;
+}
+
+.health {
+  color: #06d6a0;
+}
+
+.harmony {
+  color: #ff43f7;
+}
+.cta {
+  background: #ff4646 url("img/CTA.png") no-repeat center bottom;
+  background-size: contain; /* 🔥 было 1440px — это ошибка */
+  min-height: 668px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  color: white;
+  padding: 120px 0;
+}
+
+.cta-content {
+  width: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* 🔥 заголовок */
+.cta-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-top: 10px;
+}
+
+/* 🔥 кнопка */
+.cta-button {
+  display: inline-block;
+  padding: 14px 28px;
+  background: #181c29;
+  color: white;
+  text-decoration: none;
+  border-radius: 40px; /* 🔥 было мало скругления */
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 🔥 курсив */
+.cta-subtitle {
+  font-family: 'Allura', cursive;
+  font-size: 24px;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  margin-top: 10px;
+
+}
+
+/* 🔥 таймер контейнер */
+.cta-timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+
+  background: rgba(255, 255, 255, 0.2);
+  padding: 12px 20px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+
+.timer-item {
+  width: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.timer-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 6px;
+  width: 1px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* 🔥 цифры */
+.timer-number {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* 🔥 подписи */
+.timer-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-top: 4px;
+}
+.footer {
+  background: #ffffff;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* карточки */
+.footer-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.footer-card {
+  background: #ecf1f6;
+  padding: 20px;
+  border-radius: 16px;
+  width: 260px;
+}
+
+.footer-card img {
+  width: 60px;
+  margin-bottom: 12px;
+}
+
+/* главный текст (номер / email / адрес) */
+.footer-card h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 600; /* 🔥 норм жирность */
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  color: #181c29;
+}
+
+/* подписи */
+.footer-card p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+/* низ */
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* copyright */
+.footer-bottom p:first-child {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #181c29;
+}
+
+/* Made in */
+.footer-sub {
+  font-family: 'Allura', cursive;
+  font-size: 20px;
+  color: #181c29;
+}
+
+/* соц иконки */
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.footer-socials img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+.footer-socials img:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+
+
+
+
+
+  .gifts-page {
+  background-color: #ff4646;
+  background-image: url("./img/bg-gifts.png");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  text-align: center;
+  padding: 100px 0;
+  padding-top: 80px;
+}
+
+
+.gifts-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+.gifts-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.gifts-tabs button {
+  padding: 10px 16px;
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.gifts-tabs .active {
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 8px 16px;
+}
+
+/* сетка */
+.gifts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* карточка */
+.gift-card {
+  background: #ecf3f8;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.gift-card img {
+  width: 310px;
+  height: 230px;
+  object-fit: contain;
+}
+
+.gift-card-content {
+  background: white;
+  padding: 16px;
+  text-align: left; 
+
+}
+
+.gift-card-category {
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.gifts-page-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+
+  text-align: center;
+  color: white;
+
+  max-width: 600px;
+  margin: 0 auto 30px;
+  line-height: 1.4;
+}
