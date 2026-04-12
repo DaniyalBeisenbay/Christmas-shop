@@ -18,6 +18,11 @@
         <img src="img/snowflake.png" alt="Snowflake">
         <span>THE GIFTS</span>
       </a>
+    
+      <div class="burger">
+      <span></span>
+      <span></span>
+    </div>
 
       <nav class="nav">
         <a href="#" class="nav-link active">GIFTS</a>
@@ -38,11 +43,12 @@
         </h1>
 
         <div class="gifts-tabs">
-          <button class="gifts-tab active" type="button">ALL</button>
-          <button class="gifts-tab" type="button">FOR WORK</button>
-          <button class="gifts-tab" type="button">FOR HEALTH</button>
-          <button class="gifts-tab" type="button">FOR HARMONY</button>
+            <button class="gifts-tab active" type="button" data-filter="all">ALL</button>
+            <button class="gifts-tab" type="button" data-filter="work">FOR WORK</button>
+            <button class="gifts-tab" type="button" data-filter="health">FOR HEALTH</button>
+            <button class="gifts-tab" type="button" data-filter="harmony">FOR HARMONY</button>
         </div>
+
 
         <div class="gifts-grid">
           <div class="gift-card">
@@ -137,7 +143,7 @@
             <img src="img/gift-4.png" alt="Spontaneous Coding Philosopher">
             <div class="gift-card-content">
               <p class="gift-card-category harmony">FOR HARMONY</p>
-              <h3 class="gift-card-title">SPONTANEOUS CODING PHILOSOPHER</h3>
+              <h3 class="gift-card-title long-title">SPONTANEOUS CODING PHILOSOPHER</h3>
             </div>
           </div>
         </div>
@@ -177,6 +183,48 @@
       <a href="https://rs.school/" target="_blank" class="footer-sub">Made in Rolling Scopes School</a>
     </div>
   </footer>
+<script>
+const burger = document.querySelector('.burger');
+const nav = document.querySelector('.nav');
+const navLinks = document.querySelectorAll('.nav a');
 
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  nav.classList.toggle('open');
+});
+
+navLinks.forEach((link) => {
+  link.addEventListener('click', () => {
+    burger.classList.remove('open');
+    nav.classList.remove('open');
+  });
+});
+
+const giftTabs = document.querySelectorAll('.gifts-tab');
+const giftCards = document.querySelectorAll('.gifts-page .gift-card');
+
+giftTabs.forEach((tab) => {
+  tab.addEventListener('click', () => {
+    const filter = tab.dataset.filter;
+
+    giftTabs.forEach((button) => {
+      button.classList.remove('active');
+    });
+
+    tab.classList.add('active');
+
+    giftCards.forEach((card) => {
+      const category = card.querySelector('.gift-card-category');
+
+      if (filter === 'all' || category.classList.contains(filter)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+
+</script>
 </body>
 </html>

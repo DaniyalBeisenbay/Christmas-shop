@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Christmas Shop</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Allura&display=swap" rel="stylesheet">
@@ -16,11 +17,16 @@
       <span>THE GIFTS</span>
     </div>
 
+    <div class="burger">
+      <span></span>
+      <span></span>
+    </div>
+
     <nav class="nav">
       <a href="gifts.html">GIFTS</a>
-      <a href="#">ABOUT</a>
-      <a href="#">BEST</a>
-      <a href="#">CONTACTS</a>
+      <a href="#about">ABOUT</a>
+      <a href="#best">BEST</a>
+      <a href="#contacts">CONTACTS</a>
     </nav>
   </div>
 </header>
@@ -40,7 +46,7 @@
       <p class="hero-subtitle bottom-text">and Happy New Year</p>
     </div>
   </section>
-  <section class="about">
+  <section class="about" id="about">
   <div class="container about-container">
     <div class="about-text">
       <p class="about-subtitle">About</p>
@@ -57,31 +63,37 @@
   </div>
 </section>
 
-<section class="slider">
+<section class="slider" id="best">
   <div class="container slider-container">
     <p class="slider-subtitle">Become Happier!</p>
     <h2 class="slider-title">IN THE NEW 2025</h2>
+    <div class="slider-wrapper">
+      <div class="slider-row">
+    <div class="slider-item">
+      <span>LIVE</span>
+      <img src="img/slider-1.png" alt="LIVE">
+    </div>
 
-    <div class="slider-row">
-      <div class="slider-item">
-        <span>LIVE</span>
-        <img src="img/slider-1.png" alt="LIVE">
-      </div>
+    <div class="slider-item">
+      <span>CREATE</span>
+      <img src="img/slider-2.png" alt="CREATE">
+    </div>
 
-      <div class="slider-item">
-        <span>CREATE</span>
-        <img src="img/slider-2.png" alt="CREATE">
-      </div>
+    <div class="slider-item">
+      <span>LOVE</span>
+      <img src="img/slider-3.png" alt="LOVE">
+    </div>
 
-      <div class="slider-item">
-        <span>LOVE</span>
-        <img src="img/slider-3.png" alt="LOVE">
+    <div class="slider-item">
+      <span>DREAM</span>
+      <img src="img/slider-4.png" alt="">
+    </div>
       </div>
+    </div>
 
-      <div class="slider-item">
-        <span>DREAM</span>
-        <img src="img/slider-4.png" alt="">
-      </div>
+    <div class="slider-controls">
+      <button class="slider-btn prev">←</button>
+      <button class="slider-btn next">→</button>
     </div>
   </div>
 </section>
@@ -191,5 +203,65 @@
       <a href="https://rs.school/" target="_blank" class="footer-sub">Made in Rolling Scopes School</a>
     </div>
   </footer>
+  
+<script>
+const sliderWrapper = document.querySelector('.slider-wrapper');
+const slider = document.querySelector('.slider-row');
+const next = document.querySelector('.next');
+const prev = document.querySelector('.prev');
+
+let offset = 0;
+const burger = document.querySelector('.burger');
+const nav = document.querySelector('.nav');
+const navLinks = document.querySelectorAll('.nav a');
+
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  nav.classList.toggle('open');
+});
+
+navLinks.forEach((link) => {
+  link.addEventListener('click', () => {
+    burger.classList.remove('open');
+    nav.classList.remove('open');
+  });
+});
+
+function getGap() {
+  const styles = getComputedStyle(slider);
+  return parseFloat(styles.columnGap || styles.gap) || 0;
+}
+
+function getStep() {
+  const firstItem = slider.querySelector('.slider-item');
+  return firstItem ? firstItem.offsetWidth + getGap() : sliderWrapper.clientWidth;
+}
+
+function getMaxOffset() {
+  return Math.max(0, slider.scrollWidth - sliderWrapper.clientWidth);
+}
+
+function updateSlider() {
+  offset = Math.min(offset, getMaxOffset());
+  slider.style.transform = `translateX(-${offset}px)`;
+}
+
+next.onclick = () => {
+  offset = Math.min(offset + getStep(), getMaxOffset());
+  updateSlider();
+};
+
+prev.onclick = () => {
+  offset = Math.max(offset - getStep(), 0);
+  updateSlider();
+};
+
+/*window.addEventListener('resize', updateSlider);*/
+window.addEventListener('resize', () => {
+  offset = 0;
+  updateSlider();
+});
+updateSlider();
+</script>
 </body>
 </html>
