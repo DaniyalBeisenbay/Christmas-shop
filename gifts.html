@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Allura&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 
@@ -183,25 +183,158 @@
       <a href="https://rs.school/" target="_blank" class="footer-sub">Made in Rolling Scopes School</a>
     </div>
   </footer>
+  <button class="scroll-up" type="button" aria-label="Scroll to top">↑</button>
+  <div class="gift-modal" aria-hidden="true">
+    <div class="gift-modal__overlay"></div>
+    <div class="gift-modal__card" role="dialog" aria-modal="true">
+      <button class="gift-modal__close" type="button" aria-label="Close modal">×</button>
+      <div class="gift-modal__image"></div>
+      <div class="gift-modal__content"></div>
+    </div>
+  </div>
+<script src="js/gifts-data.js"></script>
 <script>
 const burger = document.querySelector('.burger');
 const nav = document.querySelector('.nav');
 const navLinks = document.querySelectorAll('.nav a');
+const giftModal = document.querySelector('.gift-modal');
+const giftModalCard = document.querySelector('.gift-modal__card');
+const giftModalImage = document.querySelector('.gift-modal__image');
+const giftModalContent = document.querySelector('.gift-modal__content');
+const giftModalClose = document.querySelector('.gift-modal__close');
+const giftModalOverlay = document.querySelector('.gift-modal__overlay');
+
+function closeBurgerMenu() {
+  burger.classList.remove('open');
+  nav.classList.remove('open');
+  document.body.classList.remove('menu-open');
+}
+
+function openBurgerMenu() {
+  burger.classList.add('open');
+  nav.classList.add('open');
+  document.body.classList.add('menu-open');
+}
 
 burger.addEventListener('click', () => {
-  burger.classList.toggle('open');
-  nav.classList.toggle('open');
+  if (nav.classList.contains('open')) {
+    closeBurgerMenu();
+  } else {
+    openBurgerMenu();
+  }
 });
 
 navLinks.forEach((link) => {
-  link.addEventListener('click', () => {
-    burger.classList.remove('open');
-    nav.classList.remove('open');
-  });
+  link.addEventListener('click', closeBurgerMenu);
 });
 
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    closeBurgerMenu();
+  }
+});
+
+
 const giftTabs = document.querySelectorAll('.gifts-tab');
-const giftCards = document.querySelectorAll('.gifts-page .gift-card');
+const giftCardsGrid = document.querySelector('.gifts-page .gifts-grid');
+
+function getGiftImage(category) {
+  if (category === 'For Work') {
+    return 'img/gift-1.png';
+  }
+
+  if (category === 'For Health') {
+    return 'img/gift-2.png';
+  }
+
+  return 'img/gift-4.png';
+}
+
+function getCategoryClass(category) {
+  return category.toLowerCase().replace('for ', '');
+}
+
+function createGiftCard(gift) {
+  const giftIndex = window.giftsData.indexOf(gift);
+  const categoryClass = getCategoryClass(gift.category);
+
+  return `
+    <div class="gift-card" data-gift-index="${giftIndex}">
+      <img src="${getGiftImage(gift.category)}" alt="${gift.name}">
+      <div class="gift-card-content">
+        <p class="gift-card-category ${categoryClass}">${gift.category.toUpperCase()}</p>
+        <h3 class="gift-card-title">${gift.name.toUpperCase()}</h3>
+      </div>
+    </div>
+  `;
+}
+
+function createSnowflakes(value) {
+  const count = Number(value.replace('+', '')) / 100;
+  return Array.from({ length: 5 }, (_, index) => {
+    const className = index < count ? 'active' : '';
+    return `<img class="gift-modal__snowflake ${className}" src="img/snowflake.png" alt="">`;
+  }).join('');
+}
+
+function openGiftModal(giftIndex) {
+  const gift = window.giftsData[giftIndex];
+
+  if (!gift) {
+    return;
+  }
+
+  const categoryClass = getCategoryClass(gift.category);
+
+  giftModalImage.innerHTML = `<img src="${getGiftImage(gift.category)}" alt="${gift.name}">`;
+  giftModalContent.innerHTML = `
+    <p class="gift-card-category ${categoryClass}">${gift.category.toUpperCase()}</p>
+    <h3 class="gift-modal__title">${gift.name.toUpperCase()}</h3>
+    <p class="gift-modal__description">${gift.description}</p>
+    <p class="gift-modal__subtitle">ADDS SUPERPOWERS TO:</p>
+    <div class="gift-modal__powers">
+      <div><span>Live</span><span>${gift.superpowers.live}</span><span>${createSnowflakes(gift.superpowers.live)}</span></div>
+      <div><span>Create</span><span>${gift.superpowers.create}</span><span>${createSnowflakes(gift.superpowers.create)}</span></div>
+      <div><span>Love</span><span>${gift.superpowers.love}</span><span>${createSnowflakes(gift.superpowers.love)}</span></div>
+      <div><span>Dream</span><span>${gift.superpowers.dream}</span><span>${createSnowflakes(gift.superpowers.dream)}</span></div>
+    </div>
+  `;
+
+  giftModal.classList.add('open');
+  giftModal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+}
+
+function closeGiftModal() {
+  giftModal.classList.remove('open');
+  giftModal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+}
+
+function renderGifts(filter = 'all') {
+  const filteredGifts = filter === 'all'
+    ? window.giftsData
+    : window.giftsData.filter((gift) => getCategoryClass(gift.category) === filter);
+
+  giftCardsGrid.innerHTML = filteredGifts.map(createGiftCard).join('');
+}
+
+renderGifts();
+
+giftCardsGrid.addEventListener('click', (event) => {
+  const card = event.target.closest('.gift-card');
+
+  if (card) {
+    openGiftModal(card.dataset.giftIndex);
+  }
+});
+
+giftModalClose.addEventListener('click', closeGiftModal);
+giftModalOverlay.addEventListener('click', closeGiftModal);
+
+giftModalCard.addEventListener('click', (event) => {
+  event.stopPropagation();
+});
 
 giftTabs.forEach((tab) => {
   tab.addEventListener('click', () => {
@@ -213,17 +346,32 @@ giftTabs.forEach((tab) => {
 
     tab.classList.add('active');
 
-    giftCards.forEach((card) => {
-      const category = card.querySelector('.gift-card-category');
-
-      if (filter === 'all' || category.classList.contains(filter)) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
-    });
+    renderGifts(filter);
   });
 });
+
+const scrollUpButton = document.querySelector('.scroll-up');
+
+function toggleScrollUpButton() {
+  if (window.innerWidth <= 768 && window.scrollY > 300) {
+    scrollUpButton.classList.add('show');
+  } else {
+    scrollUpButton.classList.remove('show');
+  }
+}
+
+scrollUpButton.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+
+window.addEventListener('scroll', toggleScrollUpButton);
+window.addEventListener('resize', toggleScrollUpButton);
+
+toggleScrollUpButton();
+
 
 </script>
 </body>

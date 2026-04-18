@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Christmas Shop</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=5">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Allura&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -203,38 +203,174 @@
       <a href="https://rs.school/" target="_blank" class="footer-sub">Made in Rolling Scopes School</a>
     </div>
   </footer>
+
+  <div class="gift-modal" aria-hidden="true">
+    <div class="gift-modal__overlay"></div>
+    <div class="gift-modal__card" role="dialog" aria-modal="true">
+      <button class="gift-modal__close" type="button" aria-label="Close modal">×</button>
+      <div class="gift-modal__image"></div>
+      <div class="gift-modal__content"></div>
+    </div>
+  </div>
+
   
+
+  
+<script src="js/gifts-data.js"></script>
 <script>
 const sliderWrapper = document.querySelector('.slider-wrapper');
 const slider = document.querySelector('.slider-row');
 const next = document.querySelector('.next');
 const prev = document.querySelector('.prev');
+const bestGiftsGrid = document.querySelector('.best-gifts .gifts-grid');
+const giftModal = document.querySelector('.gift-modal');
+const giftModalCard = document.querySelector('.gift-modal__card');
+const giftModalImage = document.querySelector('.gift-modal__image');
+const giftModalContent = document.querySelector('.gift-modal__content');
+const giftModalClose = document.querySelector('.gift-modal__close');
+const giftModalOverlay = document.querySelector('.gift-modal__overlay');
 
 let offset = 0;
 const burger = document.querySelector('.burger');
 const nav = document.querySelector('.nav');
 const navLinks = document.querySelectorAll('.nav a');
 
+function closeBurgerMenu() {
+  burger.classList.remove('open');
+  nav.classList.remove('open');
+  document.body.classList.remove('menu-open');
+}
+
+function openBurgerMenu() {
+  burger.classList.add('open');
+  nav.classList.add('open');
+  document.body.classList.add('menu-open');
+}
+
 burger.addEventListener('click', () => {
-  burger.classList.toggle('open');
-  nav.classList.toggle('open');
+  if (nav.classList.contains('open')) {
+    closeBurgerMenu();
+  } else {
+    openBurgerMenu();
+  }
 });
 
 navLinks.forEach((link) => {
-  link.addEventListener('click', () => {
-    burger.classList.remove('open');
-    nav.classList.remove('open');
-  });
+  link.addEventListener('click', closeBurgerMenu);
 });
 
-function getGap() {
-  const styles = getComputedStyle(slider);
-  return parseFloat(styles.columnGap || styles.gap) || 0;
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    closeBurgerMenu();
+  }
+});
+
+function getGiftImage(category) {
+  if (category === 'For Work') {
+    return 'img/gift-1.png';
+  }
+
+  if (category === 'For Health') {
+    return 'img/gift-2.png';
+  }
+
+  return 'img/gift-4.png';
 }
 
-function getStep() {
-  const firstItem = slider.querySelector('.slider-item');
-  return firstItem ? firstItem.offsetWidth + getGap() : sliderWrapper.clientWidth;
+function getCategoryClass(category) {
+  return category.toLowerCase().replace('for ', '');
+}
+
+function createGiftCard(gift) {
+  const giftIndex = window.giftsData.indexOf(gift);
+  const categoryClass = getCategoryClass(gift.category);
+
+  return `
+    <div class="gift-card" data-gift-index="${giftIndex}">
+      <img src="${getGiftImage(gift.category)}" alt="${gift.name}">
+      <div class="gift-card-content">
+        <p class="gift-card-category ${categoryClass}">${gift.category.toUpperCase()}</p>
+        <h3 class="gift-card-title">${gift.name.toUpperCase()}</h3>
+      </div>
+    </div>
+  `;
+}
+
+function createSnowflakes(value) {
+  const count = Number(value.replace('+', '')) / 100;
+  return Array.from({ length: 5 }, (_, index) => {
+    const className = index < count ? 'active' : '';
+    return `<img class="gift-modal__snowflake ${className}" src="img/snowflake.png" alt="">`;
+  }).join('');
+}
+
+function openGiftModal(giftIndex) {
+  const gift = window.giftsData[giftIndex];
+
+  if (!gift) {
+    return;
+  }
+
+  const categoryClass = getCategoryClass(gift.category);
+
+  giftModalImage.innerHTML = `<img src="${getGiftImage(gift.category)}" alt="${gift.name}">`;
+  giftModalContent.innerHTML = `
+    <p class="gift-card-category ${categoryClass}">${gift.category.toUpperCase()}</p>
+    <h3 class="gift-modal__title">${gift.name.toUpperCase()}</h3>
+    <p class="gift-modal__description">${gift.description}</p>
+    <p class="gift-modal__subtitle">ADDS SUPERPOWERS TO:</p>
+    <div class="gift-modal__powers">
+      <div><span>Live</span><span>${gift.superpowers.live}</span><span>${createSnowflakes(gift.superpowers.live)}</span></div>
+      <div><span>Create</span><span>${gift.superpowers.create}</span><span>${createSnowflakes(gift.superpowers.create)}</span></div>
+      <div><span>Love</span><span>${gift.superpowers.love}</span><span>${createSnowflakes(gift.superpowers.love)}</span></div>
+      <div><span>Dream</span><span>${gift.superpowers.dream}</span><span>${createSnowflakes(gift.superpowers.dream)}</span></div>
+    </div>
+  `;
+
+  giftModal.classList.add('open');
+  giftModal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+}
+
+function closeGiftModal() {
+  giftModal.classList.remove('open');
+  giftModal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+}
+
+function renderRandomGifts() {
+  if (!bestGiftsGrid || !window.giftsData) {
+    return;
+  }
+
+  const randomGifts = [...window.giftsData]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 4);
+
+  bestGiftsGrid.innerHTML = randomGifts.map(createGiftCard).join('');
+}
+
+renderRandomGifts();
+
+bestGiftsGrid.addEventListener('click', (event) => {
+  const card = event.target.closest('.gift-card');
+
+  if (card) {
+    openGiftModal(card.dataset.giftIndex);
+  }
+});
+
+giftModalClose.addEventListener('click', closeGiftModal);
+giftModalOverlay.addEventListener('click', closeGiftModal);
+
+giftModalCard.addEventListener('click', (event) => {
+  event.stopPropagation();
+});
+
+let sliderStep = 0;
+
+function getSliderClicksCount() {
+  return window.innerWidth > 768 ? 3 : 6;
 }
 
 function getMaxOffset() {
@@ -242,26 +378,68 @@ function getMaxOffset() {
 }
 
 function updateSlider() {
-  offset = Math.min(offset, getMaxOffset());
-  slider.style.transform = `translateX(-${offset}px)`;
+  const clicksCount = getSliderClicksCount();
+  const maxOffset = getMaxOffset();
+  const stepSize = maxOffset / clicksCount;
+  const currentOffset = sliderStep * stepSize;
+
+  slider.style.transform = `translateX(-${currentOffset}px)`;
+
+  prev.disabled = sliderStep === 0;
+  next.disabled = sliderStep === clicksCount || maxOffset === 0;
 }
 
-next.onclick = () => {
-  offset = Math.min(offset + getStep(), getMaxOffset());
-  updateSlider();
-};
+next.addEventListener('click', () => {
+  const clicksCount = getSliderClicksCount();
 
-prev.onclick = () => {
-  offset = Math.max(offset - getStep(), 0);
-  updateSlider();
-};
-
-/*window.addEventListener('resize', updateSlider);*/
-window.addEventListener('resize', () => {
-  offset = 0;
-  updateSlider();
+  if (sliderStep < clicksCount) {
+    sliderStep += 1;
+    updateSlider();
+  }
 });
+
+prev.addEventListener('click', () => {
+  if (sliderStep > 0) {
+    sliderStep -= 1;
+    updateSlider();
+  }
+});
+
+function resetSlider() {
+  sliderStep = 0;
+  updateSlider();
+}
+
+window.addEventListener('resize', resetSlider);
+window.addEventListener('load', resetSlider);
+window.addEventListener('pageshow', resetSlider);
+
 updateSlider();
+
+function updateTimer() {
+  const now = new Date();
+  const nextYear = now.getUTCFullYear() + 1;
+  const newYear = Date.UTC(nextYear, 0, 1, 0, 0, 0);
+
+  const diff = newYear - now.getTime();
+  const totalSeconds = Math.max(0, Math.floor(diff / 1000));
+
+  const days = Math.floor(totalSeconds / (60 * 60 * 24));
+  const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+  const seconds = totalSeconds % 60;
+
+  const timerNumbers = document.querySelectorAll('.timer-number');
+
+  timerNumbers[0].textContent = days;
+  timerNumbers[1].textContent = hours;
+  timerNumbers[2].textContent = minutes;
+  timerNumbers[3].textContent = seconds;
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
+
 </script>
 </body>
 </html>
